@@ -15,9 +15,9 @@ const app = Vue.createApp({
     current: {{currentType}}
     </span>
     <br>
-    <label>Pris: {{maxPrice}}:-
+    <label>Pris: {{currentMaxPrice}}:-
     <br>
-    <input type="range" min="49" max="149" @input="renderProducts" v-model="maxPrice">
+    <input type="range" :min="minPrice" :max="maxPrice" @input="renderProducts" v-model="currentMaxPrice">
     </label>
     <section>
     <ul>
@@ -49,6 +49,12 @@ const app = Vue.createApp({
             types: ["Appetizer", "Main", "Dessert"],
             products: [
                 {
+                    name: "Skorpa",
+                    price: 29,
+                    categories: ["Vuxen"],
+                    types: ["Appetizer"]
+                },
+                {
                     name: "Pannkakor",
                     price: 49,
                     categories: ["Barn", "Vuxen"],
@@ -74,7 +80,9 @@ const app = Vue.createApp({
                 }
                 return price
             },
-            maxPrice: 149,
+            minPrice: "",
+            maxPrice: "",
+            currentMaxPrice: 149,
             currentCategory: "",
             currentType: "",
             currentProducts: [],
@@ -84,6 +92,14 @@ const app = Vue.createApp({
     },
     beforeMount() {
         this.currentProducts = this.products
+        for (const {price} of this.products) {
+            if (!this.minPrice || price < this.minPrice) {
+                this.minPrice = price
+            }
+            if (!this.maxPrice || price > this.maxPrice) {
+                this.maxPrice = price
+            }
+        }
     },
     components: [],
     methods: {
@@ -92,7 +108,7 @@ const app = Vue.createApp({
                 if (
                     (product.categories.includes(this.currentCategory) || (!this.currentCategory))
                     && (product.types.includes(this.currentType) || (!this.currentType))
-                    && (product.price <= this.maxPrice)
+                    && (product.price <= this.currentMaxPrice)
                     ){
                     return true
                 } else {
