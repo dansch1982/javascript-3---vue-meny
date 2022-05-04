@@ -1,0 +1,29 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+header {
+	background-color: beige;
+}
+main {
+	background-color: whitesmoke;
+	.activeCat,
+	.activeType {
+		background-color: green;
+	}
+}
+footer {
+	background-color: aliceblue;
+}
+
+.Barn {
+	background-color: darkmagenta;
+}
+.Vuxen {
+	background-color: antiquewhite;
+}
+.Par {
+	background-color: pink;
+}
