@@ -1,56 +1,59 @@
 const app = Vue.createApp({
     template: `
     <header>
-    <h1>{{titel}}</h1>
-    <p>{{totalPrice()}}:-</p>
+    <h1>{{title}}</h1>
+    <app-total-price :total-price="totalPrice()" />
+
     </header>
+
     <main :class="currentCategory">
-    <button v-for="category in categories" @click="changeCategory(category)" :ref="category">{{category}}</button>
-    <span v-if="currentCategory">
-    current: {{currentCategory}}
-    </span>
-    <br>
-    <button v-for="type in types" @click="changeType(type)" :ref="type">{{type}}</button>
-    <span v-if="currentType">
-    current: {{currentType}}
-    </span>
-    <br>
-    <label>Pris: {{currentMaxPrice}}:-
-    <br>
-    <input type="range" :min="minPrice" :max="maxPrice" @input="renderProducts" v-model="currentMaxPrice">
-    </label>
+    
+    <nav>
+
+    <h2>Filter</h2>
+    
     <section>
-    <ul>
-    <li v-for="product in currentProducts">
-    {{product.name}}
-    <button @click="addProduct(product)">Köp</button>
-    </li>
-    </ul>
+    <article class="choices">
+    <app-changer v-for="choice in choices" :settings="choice" @callback="callback" />
+    </article>
+    
+    <article>
+    <app-nav-range :priceinfo="{currentMaxPrice: currentMaxPrice, minPrice: minPrice, maxPrice: maxPrice}" @changePrice="changePrice" />
+    </article>
+    
+    </section>
+    </nav>
+
+    <section class="menu">
+
+    <h2>Menu</h2>
+
+    <app-currentProducts :products="currentProducts" @addProduct="addProduct" />
     </section>
 
     <aside>
-    <ul>
-    <li v-for="[key, value] in orders">
-    {{value.name}}
-    <button @click="removeProduct(key)">Ta bort</button>
-    </li>
-    </ul>
+    <h2>Order</h2>
+    <app-orders :orders="orders" @removeProduct="removeProduct" />
     </aside>
 
     </main>
+
     <footer>
-    {{footerInfo}}
+
+    <app-footer :text="footerInfo" />
+
     </footer>
             `,
     data() {
         return {
-            titel: "Menu",
+            title: "Resturangen Resturang",
             categories: ["Barn", "Vuxen", "Par"],
+            choices: [],
             types: ["Appetizer", "Main", "Dessert"],
             products: [
                 {
                     name: "Skorpa",
-                    price: 29,
+                    price: 39,
                     categories: ["Vuxen"],
                     types: ["Appetizer"]
                 },
@@ -87,7 +90,7 @@ const app = Vue.createApp({
             currentType: "",
             currentProducts: [],
             orders: new Map(),
-            footerInfo: "This is a footer."
+            footerInfo: "This is a footer component."
         };
     },
     beforeMount() {
@@ -97,13 +100,20 @@ const app = Vue.createApp({
                 this.minPrice = price
             }
             if (!this.maxPrice || price > this.maxPrice) {
+                this.currentMaxPrice = price
                 this.maxPrice = price
             }
         }
+        this.choices.push(
+        {type: "Kategori", list: this.categories, event: "changeCategory"},
+        {type: "Typ", list: this.types, event: "changeType"},
+        )
+
     },
-    components: [],
+    components: ['app-title'],
     methods: {
         renderProducts() {
+            //this.currentMaxPrice = maxPrice
             this.currentProducts = this.products.filter((product) => {
                 if (
                     (product.categories.includes(this.currentCategory) || (!this.currentCategory))
@@ -116,25 +126,29 @@ const app = Vue.createApp({
                 }
             })
         },
+        changePrice(price) {
+            this.currentMaxPrice = price
+            this.renderProducts()
+        },
         changeCategory(category) {
-            const active = document.querySelector('.activeCat')
-            if (active) active.classList.remove('activeCat')
+            //const active = document.querySelector('.activeCat')
+            //if (active) active.classList.remove('activeCat')
             if (this.currentCategory === category) {
                 this.currentCategory = null
             } else {
                 this.currentCategory = category
-                this.$refs[category][0].classList.add("activeCat")
+                //this.$refs[category][0].classList.add("activeCat")
             }
             this.renderProducts()
         },
         changeType(type) {
-            const active = document.querySelector('.activeType')
-            if (active) active.classList.remove('activeType')
+            //const active = document.querySelector('.activeType')
+            //if (active) active.classList.remove('activeType')
             if (this.currentType === type) {
                 this.currentType = null
             } else {
                 this.currentType = type
-                this.$refs[type][0].classList.add("activeType")
+                //this.$refs[type][0].classList.add("activeType")
             }
             this.renderProducts()
         },
@@ -143,7 +157,103 @@ const app = Vue.createApp({
         },
         removeProduct(product) {
             this.orders.delete(product)
+        },
+        callback(value) {
+            this[value.method](value.args)
         }
     }
 });
+
+app.component('app-total-price', {
+    template: `
+    <p>Nuvarande ordervärde: {{totalPrice}}:-</p>
+    `,
+    props: ["total-price"]
+})
+
+app.component('app-changer', {
+    template: `
+    <section>
+    <h3>{{settings.type}}</h3>
+    <section class="buttons">
+    <button v-for="item in settings.list" @click="callback(item)" :ref="item" :type="settings.type">{{item}}</button>
+    </section>
+    </section>
+    `,
+    methods: {
+        callback(value) {
+            const button = event.target
+            if (button.getAttribute('active')) {
+                button.removeAttribute('active')
+            } else {
+                document.querySelectorAll(`[active][type=${this.settings.type}]`).forEach(element => {
+                    element.removeAttribute('active')
+                })
+                button.setAttribute('active', true)
+            }
+            this.$emit("callback", {method:this.settings.event,args:value})
+        }
+    },
+    props: ["settings"],
+    emits: ["callback"]
+})
+
+app.component('app-nav-range', {
+    template: `
+    <label>Pris: {{priceinfo.currentMaxPrice}}:-
+    <input type="range" :min="priceinfo.minPrice" :max="priceinfo.maxPrice" @input="renderProducts" v-model="priceinfo.currentMaxPrice">
+    </label>
+    `,
+    methods: {
+        renderProducts() {
+            this.$emit("changePrice", this.priceinfo.currentMaxPrice)
+        }
+    },
+    props: ["priceinfo"]
+})
+
+app.component('app-currentProducts', {
+    template: `
+    <h3>Filtrerade produkter</h3>
+    <ul>
+    <li v-for="product in products">
+    {{product.name}} {{product.price}}:-
+    <button @click="addProduct(product)">Köp</button>
+    </li>
+    </ul>
+    `,
+    methods: {
+        addProduct(product) {
+            this.$emit("addProduct", product)
+        }
+    },
+    props: ["products"],
+    emits: ["addProduct"]
+})
+
+app.component('app-orders', {
+    template: `
+    <ul>
+    <li v-for="[key, value] in orders">
+    {{value.name}}
+    <button @click="removeProduct(key)">Ta bort</button>
+    </li>
+    </ul>
+    `,
+    methods: {
+        removeProduct(key) {
+            this.$emit("removeProduct", key)
+        }
+    },
+    props: ["orders"],
+    emits: ["removeProduct"]
+})
+
+app.component('app-footer', {
+    template: `
+    {{text}}
+    `,
+    props: ["text"]
+})
+
 app.mount("#menu")

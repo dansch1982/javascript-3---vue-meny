@@ -5,11 +5,83 @@
 }
 
 header {
+  display: flex;
+  flex-direction: column;
   background-color: beige;
+  padding: 1rem;
+  gap: 1rem;
+}
+header h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+header p {
+  text-align: center;
 }
 
 main {
   background-color: whitesmoke;
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-template-rows: 1fr 1fr;
+}
+main nav {
+  display: flex;
+  flex-direction: column;
+  background-color: aquamarine;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
+}
+main nav h2 {
+  text-align: center;
+}
+main nav section .choices {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  gap: 0.5rem;
+}
+main nav section .choices > section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+main nav section .choices > section h3 {
+  text-align: center;
+  white-space: nowrap;
+}
+main nav section .choices > section .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+main nav section .choices > section .buttons button {
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  width: 6.5rem;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border: 2px solid black;
+}
+main nav section .choices > section .buttons button[active] {
+  background-color: green;
+}
+main .menu {
+  background-color: cadetblue;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 2;
+  grid-row-end: 2;
+}
+main aside {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  background-color: aqua;
 }
 main .activeCat,
 main .activeType {
