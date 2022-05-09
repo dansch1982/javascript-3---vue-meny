@@ -3,7 +3,6 @@ const app = Vue.createApp({
     <header>
     <h1>{{title}}</h1>
     <app-total-price :total-price="totalPrice()" />
-
     </header>
 
     <main :class="currentCategory">
@@ -33,7 +32,7 @@ const app = Vue.createApp({
 
     <aside>
     <h2>Order</h2>
-    <app-orders :orders="orders" @removeProduct="removeProduct" />
+    <app-orders :orders="orders" @removeProduct="removeProduct" :temp="totalPrice()" />
     </aside>
 
     </main>
@@ -50,6 +49,7 @@ const app = Vue.createApp({
             categories: ["Barn", "Vuxen", "Par"],
             choices: [],
             types: ["Appetizer", "Main", "Dessert"],
+            temp:0,
             products: [
                 {
                     name: "Skorpa",
@@ -81,6 +81,7 @@ const app = Vue.createApp({
                 for (const [key, value] of this.orders) {
                     price += value.price
                 }
+                this.temp = price
                 return price
             },
             minPrice: "",
@@ -200,9 +201,12 @@ app.component('app-changer', {
 
 app.component('app-nav-range', {
     template: `
-    <label>Pris: {{priceinfo.currentMaxPrice}}:-
+    <section class="range">
+    <h3>Pris</h3>
+    <label>{{priceinfo.currentMaxPrice}}:-
     <input type="range" :min="priceinfo.minPrice" :max="priceinfo.maxPrice" @input="renderProducts" v-model="priceinfo.currentMaxPrice">
     </label>
+    </section>
     `,
     methods: {
         renderProducts() {
@@ -216,10 +220,15 @@ app.component('app-currentProducts', {
     template: `
     <h3>Filtrerade produkter</h3>
     <ul>
-    <li v-for="product in products">
-    {{product.name}} {{product.price}}:-
+    <li v-for="product in products" class="product-card">
+    <h1>{{product.name}}</h1>
+    <img src="./images/placeholder.png" alt="">
+    <span>{{product.price}}:-</span>
     <button @click="addProduct(product)">Köp</button>
     </li>
+
+
+
     </ul>
     `,
     methods: {
@@ -234,23 +243,25 @@ app.component('app-currentProducts', {
 app.component('app-orders', {
     template: `
     <ul>
-    <li v-for="[key, value] in orders">
-    {{value.name}}
+    <li v-for="[key, value] in orders" class="product">
     <button @click="removeProduct(key)">Ta bort</button>
+    {{value.name}}
     </li>
     </ul>
+    {{temp}}
     `,
     methods: {
         removeProduct(key) {
             this.$emit("removeProduct", key)
         }
     },
-    props: ["orders"],
+    props: ["orders", "temp"],
     emits: ["removeProduct"]
 })
 
 app.component('app-footer', {
     template: `
+    <h2>Footer</h2>
     {{text}}
     `,
     props: ["text"]
