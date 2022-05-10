@@ -72,10 +72,10 @@ main {
 		grid-column-end: 1;
 		grid-row-start: 1;
 		grid-row-end: 1;
-
 		display: flex;
 		flex-direction: column;
 		padding: 1rem 0;
+		height: max-content;
 		h2 {
 			text-align: center;
 		}
@@ -130,6 +130,7 @@ main {
 		overflow: auto;
 		padding: 1rem;
 		@include container();
+		height: 100%;
 		ul {
 			flex-wrap: wrap;
 			display: flex;

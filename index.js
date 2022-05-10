@@ -181,19 +181,22 @@ const app = Vue.createApp({
 	},
 	beforeMount() {
 		this.currentProducts = this.products;
-		for (const { price } of this.products) {
-			if (!this.minPrice || price < this.minPrice) {
-				this.minPrice = price;
-			}
-			if (!this.maxPrice || price > this.maxPrice) {
-				this.currentMaxPrice = price;
-				this.maxPrice = price;
-			}
-		}
+		this.calcPrice();
 		this.choices.push({ type: "Kategori", list: this.categories, event: "changeCategory" }, { type: "Typ", list: this.types, event: "changeType" });
 	},
 	components: ["app-title"],
 	methods: {
+		calcPrice() {
+			for (const { price } of this.products) {
+				if (!this.minPrice || price < this.minPrice) {
+					this.minPrice = price;
+				}
+				if (!this.maxPrice || price > this.maxPrice) {
+					this.currentMaxPrice = price;
+					this.maxPrice = price;
+				}
+			}
+		},
 		renderProducts() {
 			//this.currentMaxPrice = maxPrice
 			this.currentProducts = this.products.filter((product) => {
