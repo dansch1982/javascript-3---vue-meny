@@ -7,6 +7,7 @@
 body {
   width: 100vw;
   height: 100vh;
+  background-color: #F8F8F8;
 }
 
 #menu {
@@ -16,6 +17,12 @@ body {
   display: grid;
   grid-template-rows: -webkit-max-content auto -webkit-max-content;
   grid-template-rows: max-content auto max-content;
+}
+#menu header, #menu main, #menu footer {
+  background-color: #F8F8F8;
+}
+#menu .menu {
+  background-image: url(./images/food.png);
 }
 
 header {
@@ -42,7 +49,7 @@ main {
   gap: 1rem;
 }
 main nav {
-  border: 5px solid black;
+  border: 3px solid black;
   border-radius: 1rem;
   grid-column-start: 1;
   grid-column-end: 1;
@@ -112,7 +119,7 @@ main nav section .range label input {
   width: 13rem;
 }
 main .menu {
-  border: 5px solid black;
+  border: 3px solid black;
   border-radius: 1rem;
   grid-column-start: 1;
   grid-column-end: 1;
@@ -179,17 +186,22 @@ main .menu ul .product button {
   color: white;
 }
 main aside {
-  border: 5px solid black;
-  border-radius: 1rem;
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 3;
   display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
   gap: 0.5rem;
+  align-items: flex-start;
+  height: 100%;
+  display: grid;
+  grid-template-rows: -webkit-max-content auto -webkit-max-content;
+  grid-template-rows: max-content auto max-content;
+  border: 3px solid black;
+  border-radius: 1rem;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
   padding: 1rem;
 }
 main aside ul {
@@ -199,6 +211,7 @@ main aside ul {
   align-items: center;
   list-style: none;
   gap: 0.5rem;
+  overflow: hidden;
 }
 main aside ul .product {
   gap: 0.5rem;
@@ -214,23 +227,46 @@ main aside ul .product button {
   background-color: red;
   color: white;
 }
+main aside .prisInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+main aside .prisInfo p {
+  text-align: center;
+}
 main .activeCat,
 main .activeType {
   background-color: green;
 }
 
+footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+}
+footer ul {
+  list-style-type: none;
+}
+
 .Barn nav {
-  background-image: url(./images/baloon.webp);
-  background-position: center;
+  background-color: #F0E1A4 !important;
 }
 .Barn .menu {
-  background-color: darkmagenta;
+  background-image: url(./images/baloons.png) !important;
 }
 
+.Vuxen nav {
+  background-color: #8DC6FE !important;
+}
 .Vuxen .menu {
-  background-color: antiquewhite;
+  background-image: url(./images/blue.webp) !important;
+  background-size: cover;
 }
 
+.Par nav {
+  background-color: #FB87A1 !important;
+}
 .Par .menu {
-  background-color: pink;
+  background-image: url(./images/hearts.jpg) !important;
 }/*# sourceMappingURL=style.css.map */

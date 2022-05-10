@@ -24,6 +24,7 @@
 body {
 	width: 100vw;
 	height: 100vh;
+	background-color: #F8F8F8;
 }
 #menu {
 	margin: auto;
@@ -31,6 +32,12 @@ body {
 	max-width: 1200px;
 	display: grid;
 	grid-template-rows: max-content auto max-content;
+	header, main, footer {
+		background-color: #F8F8F8;
+	}
+	.menu {
+		background-image: url(./images/food.png);
+	}
 }
 header {
 	display: flex;
@@ -47,8 +54,8 @@ header {
 }
 
 @mixin border {
-	border: 5px solid black;
-		border-radius: 1rem;
+	border: 3px solid black;
+	border-radius: 1rem;
 }
 
 main {
@@ -58,6 +65,7 @@ main {
 	grid-template-rows: max-content auto;
 	overflow: hidden;
 	gap: 1rem;
+	
 	nav {
 		@include border();
 		grid-column-start: 1;
@@ -111,7 +119,7 @@ main {
 				}
 			}
 		}
-
+		
 	}
 	.menu {
 		@include border();
@@ -172,12 +180,16 @@ main {
 		}
 	}
 	aside {
+		@include container();
+		align-items: flex-start;
+		height: 100%;
+		display: grid;
+		grid-template-rows: max-content auto max-content;
 		@include border();
 		grid-column-start: 2;
 		grid-column-end: 2;
 		grid-row-start: 1;
 		grid-row-end: 3;
-		@include container();
 		padding: 1rem;
 		ul {
 			display: flex;
@@ -186,6 +198,7 @@ main {
 			align-items: center;
 			list-style: none;
 			gap: 0.5rem;
+			overflow: hidden;
 			.product {
 				gap: 0.5rem;
 				display: flex;
@@ -201,6 +214,14 @@ main {
 				}
 			}
 		}
+		.prisInfo {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			p {
+				text-align: center;
+			}
+		}
 	}
 	.activeCat,
 	.activeType {
@@ -208,24 +229,38 @@ main {
 	}
 }
 footer {
+	display:  flex;
+	justify-content: space-around;
+	padding: 1rem;
+	ul {
+		list-style-type: none;
+	}
 }
 
 .Barn {
+	header {
+	}
 	nav {
-		background-image: url(./images/baloon.webp);
-		background-position: center;
+		background-color: #F0E1A4!important;
 	}
 	.menu {
-		background-color: darkmagenta;
+		background-image: url(./images/baloons.png)!important;
 	}
 }
 .Vuxen {
+	nav {
+		background-color: #8DC6FE!important;
+	}
 	.menu {
-		background-color: antiquewhite;
+		background-image: url(./images/blue.webp)!important;
+		background-size:cover;
 	}
 }
 .Par {
+	nav {
+		background-color: #FB87A1!important;
+	}
 	.menu {
-		background-color: pink;
+		background-image: url(./images/hearts.jpg)!important;
 	}
 }
