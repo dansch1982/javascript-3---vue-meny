@@ -4,8 +4,6 @@
 	box-sizing: border-box;
 }
 
-
-
 @mixin container {
 	display: flex;
 	flex-direction: column;
@@ -239,8 +237,6 @@ footer {
 }
 
 .Barn {
-	header {
-	}
 	nav {
 		background-color: #F0E1A4!important;
 	}

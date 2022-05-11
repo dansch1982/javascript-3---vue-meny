@@ -198,7 +198,6 @@ const app = Vue.createApp({
 			}
 		},
 		renderProducts() {
-			//this.currentMaxPrice = maxPrice
 			this.currentProducts = this.products.filter((product) => {
 				if ((product.categories.includes(this.currentCategory) || !this.currentCategory) && (product.types.includes(this.currentType) || !this.currentType) && product.price <= this.currentMaxPrice) {
 					return true;
